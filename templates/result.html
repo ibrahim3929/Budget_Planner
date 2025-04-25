@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Budget Result</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px; }
+        .card { background: white; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; box-shadow: 0px 0px 10px #ccc; }
+        h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        td, th { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #eee; }
+        canvas { margin-top: 30px; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="card">
+        <h2>Budget Recommendation</h2>
+        <p><strong>Country:</strong> {{ country }}</p>
+        <p><strong>Your Income:</strong> {{ income }}</p>
+        <p><strong>Minimum Wage:</strong> {{ min_wage }}</p>
+        <p><strong>Ratio:</strong> {{ ratio }}</p>
+
+        <h3>Comment:</h3>
+        <p>{{ comment }}</p>
+
+        {% if budget %}
+        <h3>Suggested Budget Breakdown:</h3>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Amount</th>
+            </tr>
+            {% for item, amount in budget.items() %}
+            <tr>
+                <td>{{ item }}</td>
+                <td>{{ amount }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <canvas id="budgetChart" width="400" height="400"></canvas>
+        <script>
+            const ctx = document.getElementById('budgetChart').getContext('2d');
+            const budgetChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: {{ budget.keys()|list|tojson }},
+                    datasets: [{
+                        label: 'Budget',
+                        data: {{ budget.values()|list|tojson }},
+                        backgroundColor: [
+                            '#ff9999','#66b3ff','#99ff99','#ffcc99',
+                            '#c2c2f0','#ffb3e6','#c0e218','#8fd9a8'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'right' }
+                    }
+                }
+            });
+        </script>
+        {% endif %}
+    </div>
+</body>
+</html>

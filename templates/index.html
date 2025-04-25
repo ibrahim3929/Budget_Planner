@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Budget Planner</title>
+</head>
+<body>
+    <h2>Income-Based Budget Suggestion</h2>
+    <form action="/" method="post">
+        <label>Income:</label><br>
+        <input type="number" name="income" required><br><br>
+
+        <label>Country:</label><br>
+        <select name="country" required>
+            <option value="India">India</option>
+            <option value="Latvia">Latvia</option>
+            <option value="Germany">Germany</option>
+            <option value="USA">USA</option>
+        </select><br><br>
+
+        <input type="submit" value="Get Budget Advice">
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul>
+          {% for category, message in messages %}
+            <li style="color: red;">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+</body>
+</html>
